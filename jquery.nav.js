@@ -83,27 +83,18 @@
 			var self = this;
 			var docHeight;
 
-			self.$win.on('scroll.onePageNav', function() {
-				self.didScroll = true;
-			});
-
-			self.t = setInterval(function() {
-				docHeight = self.$doc.height();
-
-				//If it was scrolled
-				if(self.didScroll) {
-					self.didScroll = false;
-					self.scrollChange();
-				}
-
-				//If the document height changes
+			/* Smarter method using a debounced listener */
+			$(window).smartscroll(function()
+			{
+				self.scrollChange();
+			
 				if(docHeight !== self.docHeight) {
 					self.docHeight = docHeight;
 					self.getPositions();
 				}
-			}, 250);
+			});
 		},
-
+		
 		getHash: function($link) {
 			return $link.attr('href').split('#')[1];
 		},
